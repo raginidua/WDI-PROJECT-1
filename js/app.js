@@ -1,122 +1,174 @@
-$(function() {
+$(start);
 
-  var $squares = $('li');
-  var randomObject;
-  var $random;
-  var count = 10;
-  var timer;
-  var imagesInterval;
-  var score = 0;
-  var scale;
-  var arrayNumber;
-  var level = 1;
-  var intervalSpeed = 2000;
+var $squares;
+var count;
+var score;
+var level;
+var intervalSpeed;
+var scale;
+var arrayNumber;
+var timer;
+var imagesInterval;
+var objects = [
+  {
+    name: 'safeplanet1',
+    image: 'safeplanet1',
+    speed: 2000,
+    points: 5
+  }, {
+    name: 'safeplanet2',
+    image: 'safeplanet2',
+    speed: 2000,
+    points: 5
+  }, {
+    name: 'thesun',
+    image: 'thesun',
+    speed: 2000,
+    points: -10
+  }, {
+    name: 'earth',
+    image: 'earth',
+    speed: 2000,
+    points: 20
+  }
+];
+
+function start() {
+  $squares      = $('li');
+  count         = 25;
+  score         = 0;
+  level         = 1;
+  intervalSpeed = 2000;
 
   $('.countdown').html(count);
+  $('.bulk').hide();
+  $('.level').html('Space Landing: Level ' + level);
+  $('button').on('click', begin);
+}
 
-  function beginGame() {
-    $('button').on('click', function() {
-      timer = setInterval(countdownTimer, 1000);
-      imagesInterval = setInterval(go, intervalSpeed);
-    });
-  }
+function begin() {
+  $('.intro').hide();
+  $('.bulk').show();
+  // Initially hide start button
+  $(this).hide();
+  timer          = setInterval(countdownTimer, 1000);
+  imagesInterval = setInterval(go, intervalSpeed);
+}
 
-  beginGame();
+function countdownTimer() {
+  $('.countdown').each(changeTimer);
+}
 
-  function countdownTimer() {
-    $('.countdown').each(function() {
-      count = parseInt($(this).html());
-      if (count !== 0) {
-        $(this).html(count - 1);
-      } else if (count <= 0){
-        clearInterval(timer);
-      }
-    });
-  }
+function changeTimer() {
+  count = parseInt($(this).html());
+  if (count !== 0) {
+    $(this).html(count - 1);
+  } else if (count <= 0){
+    clearInterval(timer);
+    clearInterval(imagesInterval);
 
-
-  var objects = [
-    {
-      name: 'flower',
-      image: 'https://s-media-cache-ak0.pinimg.com/236x/d9/17/04/d91704a05899fef30e676834fb93456e.jpg',
-      speed: 1000,
-      points: 1
-    }, {
-      name: 'worm',
-      image: 'http://www.clipartkid.com/images/0/worm-clipart-cute-worm-clipart-clipart-worm-in-apple-rJIjz4-clipart.gif',
-      speed: 1000,
-      points: 1
-    }, {
-      name: 'cactus',
-      image: 'http://res.cloudinary.com/hrscywv4p/image/upload/c_fill,f_auto,g_faces:center,h_200,q_90,w_200/v1/670625/cactus-tv-logo_rojwcn.png',
-      speed: 1000,
-      points: 1
-    }, {
-      name: 'bumblebee',
-      image: 'https://s-media-cache-ak0.pinimg.com/236x/98/97/57/98975747a8471fa2bcbb0a047b30fd67.jpg',
-      speed: 1000,
-      points: 1
-    }
-  ];
-
-  function go() {
-    $random = $($squares[Math.floor(Math.random() * $squares.length)]);
-    scale = Math.floor(Math.random() * 10);
-    if (scale < 4) {
-      arrayNumber = 0;
-    } else if (scale < 7) {
-      arrayNumber = 1;
-    } else if (scale < 9) {
-      arrayNumber = 2;
+    if (score >= 40) {
+      $('.winner').fadeIn('slow');
+      $('.winner').html('Well done! on to the next level');
+      level += 1;
+      nextLevel();
     } else {
-      arrayNumber = 3;
-    }
-    randomObject = objects[parseInt(arrayNumber)];
-    $($random).css('background-image', 'url(' + randomObject.image + ')');
-    flash($random);
-    if (count <= 0) {
-      clearInterval(imagesInterval);
-      $('#scoreboard').html('');
-      if (score >= 3) {
-        $('.winner').fadeIn('fast');
-        $('.winner').html('Well done! on to the next level');
-        level += 1;
-        nextLevel(level);
-      } else if (score < 3) {
-        $('.winner').fadeIn('fast');
-        $('.winner').html('Try again, you do not have enough points to get to the next level');
-      }
+      $('.winner').fadeIn('slow');
+      $('.winner').html('Try again, you do not have enough points to get to the next level');
+      reset();
     }
   }
+}
 
-  function nextLevel(holder) {
-    if (holder === 2) {
-      intervalSpeed -= 1000;
-      count = 20;
-      score = 0;
-      console.log(intervalSpeed);
-      beginGame();
-    } else if (holder === 3) {
-      console.log('hi');
+function go() {
+  var $random = $($squares[Math.floor(Math.random() * $squares.length)]);
+  scale = Math.floor(Math.random() * 10);
+  if (scale < 4) {
+    arrayNumber = 0;
+  } else if (scale < 7) {
+    arrayNumber = 1;
+  } else if (scale < 9) {
+    arrayNumber = 2;
+  } else {
+    arrayNumber = 3;
+  }
+  var randomObject = objects[parseInt(arrayNumber)];
+
+  $random.css('background-image', 'url("images/' + randomObject.image + '.png")');
+
+  $random.one('click', function() {
+    console.log('click');
+    if ($(this).css('background-image') !== 'none') {
+      var shootingStar = document.createElement('img');
+      shootingStar.setAttribute('src', 'images/shootingstars.png');
+      $(this).append(shootingStar);
+      document.getElementById('laser').play();
+      console.log($('#audio'));
+      $('#scoreboard').html(score += randomObject.points);
+      $(this).css('background-image', 'none');
     }
-  }
+  });
 
-  function flash(argument) {
-    setTimeout(function() {
-      argument.css('background-image', 'none');
-    }, randomObject.speed);
-    eventListener($random);
-  }
+  setTimeout(function() {
+    $('ul li img').remove();
+    $random.css('background-image', 'none');
+  }, randomObject.speed);
+}
 
-  function eventListener(placeholder) {
-    placeholder.one('click', function() {
-      if (placeholder.css('background-image') !== 'none') {
-        console.log(placeholder.css('background-image') !== 'none');
-        $('#scoreboard').html(score += randomObject.points);
-      }
-    });
+function reset() {
+  $('.winner').fadeOut('1500');
+  count = 25;
+  level = 1;
+  $('.countdown').html(count);
+  $('.level').html('Space Landing: Level ' + level);
+  timer = '';
+  imagesInterval = '';
+  score = 0;
+  intervalSpeed = 2000;
+  $('#scoreboard').html('Score');
+  $('button').show();
+}
+
+function nextLevel() {
+  console.log('Now the level is', level);
+  if (level === 2) {
+    intervalSpeed -= 200;
+    count = 20;
+    $('.countdown').html(count);
+    $('.level').html('Level ' + level);
+    score = 0;
+    $('button').show();
+    $('.winner').fadeOut('slow');
+    $('#scoreboard').html('Score');
+  } else if (level === 3) {
+    intervalSpeed -= 200;
+    count = 15;
+    $('.countdown').html(count);
+    $('.level').html('Space Landing: Level ' + level);
+    score = 0;
+    console.log(intervalSpeed);
+    $('button').show();
+    $('.winner').fadeOut('slow');
+    $('#scoreboard').html('Score');
+  } else {
+    $('.winner').html('Congratulations, you have completed the game!');
+    $('.winner').fadeOut('slow');
+    $('button').show();
+    $('#scoreboard').html('Score');
+    reset();
   }
-});
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 

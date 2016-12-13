@@ -1,21 +1,28 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Project 1</title>
-    <link rel="stylesheet" href="css/style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="js/app.js" charset="utf-8"></script>
-  </head>
-  <body>
-<!-- <div id="upper-section"></div> -->
-<br>
-<div id="main-section">
-  <button type="start-button">START</button>
-  <div id="scoreboard"></div>
-  <div class="countdown"></div>
-  <div id="grid">
-  <div class="winner"></div>
+<head>
+  <meta charset="utf-8">
+  <title>Project 1</title>
+  <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="js/app.js" charset="utf-8"></script>
+</head>
+<body>
+  <div class="intro">
+    <audio id="laser" src="sounds/laser.wav"></audio>
+    <img class="astronaut" src="images/astro1.png">
+    <h1>Space Landing!</h1>
+    <p>Click on the planets to help these astronauts make a safe landing, but make sure you avoid the sun! Win double points for returning them safely to earth.</p>
+    <button id="intro">START GAME</button>
+  </div>
+  <div class="bulk">
+    <div class="top"></div>
+    <button type="start-button" class="button">START</button>
+    <br>
+    <div class="winner"></div>
+    <br>
+    <div class="level"></div>
     <ul>
       <li id="1"></li>
       <li id="2"></li>
@@ -27,8 +34,9 @@
       <li id="8"></li>
       <li id="9"></li>
     </ul>
+    <br>
+    <div class="countdown"></div>
+    <div id="scoreboard">Score</div>
   </div>
-
-</div>
 </body>
 </html>
