@@ -29,7 +29,7 @@ var objects = [
     name: 'earth',
     image: 'earth',
     speed: 2000,
-    points: 20
+    points: 10
   }
 ];
 
@@ -67,14 +67,14 @@ function changeTimer() {
     clearInterval(timer);
     clearInterval(imagesInterval);
 
-    if (score >= 30) {
+    if (score >= 25) {
       $('.winner').fadeIn('slow');
       $('.winner').html('Well done! on to the next level');
       level += 1;
       nextLevel();
     } else {
       $('.winner').fadeIn('slow');
-      $('.winner').html('Try again, you do not have enough points to get to the next level');
+      $('.winner').html('Game Over.  Try Again.');
       reset();
     }
   }
@@ -116,7 +116,7 @@ function go() {
 }
 
 function reset() {
-  $('.winner').fadeOut('1500');
+  $('.winner').fadeOut('slow');
   count = 25;
   level = 1;
   $('.countdown').html(count);
