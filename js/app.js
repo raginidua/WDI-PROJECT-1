@@ -67,7 +67,7 @@ function changeTimer() {
     clearInterval(timer);
     clearInterval(imagesInterval);
 
-    if (score >= 40) {
+    if (score >= 30) {
       $('.winner').fadeIn('slow');
       $('.winner').html('Well done! on to the next level');
       level += 1;
@@ -158,32 +158,3 @@ function nextLevel() {
     reset();
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// function Go ----
-// var score = 0
-// var counter = 0
-// var squaresArray = [] (empty array)
-// var playerScore = 0
-// var Max = 10;
-// var timerInterval - property of each object
-// another function which is a timer where the count down happens - when it hits 0, you end the game
-//
-
-// Loop through the go function and include interval timing so that this happens repeatedly until the countdown timer is 0 and build the countdown timer
-// Build a start button which corresponds with the countdown timer
-// We need to store the points in a separate scoreboard, linked to successful clicks
-//Make the game end and declare a winner at the end
