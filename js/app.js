@@ -11,18 +11,18 @@ var timer;
 var imagesInterval;
 var objects = [
   {
-    name: 'safeplanet1',
-    image: 'safeplanet1',
+    name: 'rocket',
+    image: 'rocket',
+    speed: 2000,
+    points: 10
+  }, {
+    name: 'space station',
+    image: 'spacestation',
     speed: 2000,
     points: 5
   }, {
-    name: 'safeplanet2',
-    image: 'safeplanet2',
-    speed: 2000,
-    points: 5
-  }, {
-    name: 'thesun',
-    image: 'thesun',
+    name: 'asteroid',
+    image: 'asteroid',
     speed: 2000,
     points: -10
   }, {
@@ -42,13 +42,18 @@ function start() {
 
   $('.countdown').html(count);
   $('.bulk').hide();
+  $('.journey').hide();
   $('.level').html('Space Landing: Level ' + level);
   $('button').on('click', begin);
+  $('html,body').css('cursor','url("images/cursor1.png")');
 }
 
+
 function begin() {
+  $('#asteroid1').hide();
   $('.intro').hide();
   $('.bulk').show();
+  $('.journey').show();
   // Initially hide start button
   $(this).hide();
   timer          = setInterval(countdownTimer, 1000);
@@ -104,6 +109,7 @@ function go() {
       $(this).append(shootingStar);
       document.getElementById('laser').play();
       console.log($('#audio'));
+      $('#astro').animate({ 'marginTop': '20px'}, 500);
       $('#scoreboard').html(score += randomObject.points);
       $(this).css('background-image', 'none');
     }
